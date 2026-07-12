@@ -1,0 +1,215 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* JobPulse brand tokens */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-rising: var(--rising);
+  --color-falling: var(--falling);
+  --color-hairline: var(--hairline);
+}
+
+:root {
+  /* JobPulse dark palette - applied as default (no light theme) */
+  --radius: 0.5rem;
+
+  --bg: #12161C;
+  --surface: #1B212B;
+  --text: #E8E6E1;
+  --rising: #F2A93B;
+  --falling: #3FA796;
+  --hairline: #2A313D;
+
+  --background: #12161C;
+  --foreground: #E8E6E1;
+  --card: #1B212B;
+  --card-foreground: #E8E6E1;
+  --popover: #1B212B;
+  --popover-foreground: #E8E6E1;
+  --primary: #F2A93B;
+  --primary-foreground: #12161C;
+  --secondary: #1B212B;
+  --secondary-foreground: #E8E6E1;
+  --muted: #1B212B;
+  --muted-foreground: #8A8F98;
+  --accent: #2A313D;
+  --accent-foreground: #E8E6E1;
+  --destructive: #E5484D;
+  --border: #2A313D;
+  --input: #2A313D;
+  --ring: #F2A93B;
+  --chart-1: #F2A93B;
+  --chart-2: #3FA796;
+  --chart-3: #6B7280;
+  --chart-4: #E8E6E1;
+  --chart-5: #8A8F98;
+  --sidebar: #1B212B;
+  --sidebar-foreground: #E8E6E1;
+  --sidebar-primary: #F2A93B;
+  --sidebar-primary-foreground: #12161C;
+  --sidebar-accent: #2A313D;
+  --sidebar-accent-foreground: #E8E6E1;
+  --sidebar-border: #2A313D;
+  --sidebar-ring: #F2A93B;
+}
+
+.dark {
+  /* Same as :root — app is dark-only */
+  --bg: #12161C;
+  --surface: #1B212B;
+  --text: #E8E6E1;
+  --rising: #F2A93B;
+  --falling: #3FA796;
+  --hairline: #2A313D;
+
+  --background: #12161C;
+  --foreground: #E8E6E1;
+  --card: #1B212B;
+  --card-foreground: #E8E6E1;
+  --popover: #1B212B;
+  --popover-foreground: #E8E6E1;
+  --primary: #F2A93B;
+  --primary-foreground: #12161C;
+  --secondary: #1B212B;
+  --secondary-foreground: #E8E6E1;
+  --muted: #1B212B;
+  --muted-foreground: #8A8F98;
+  --accent: #2A313D;
+  --accent-foreground: #E8E6E1;
+  --destructive: #E5484D;
+  --border: #2A313D;
+  --input: #2A313D;
+  --ring: #F2A93B;
+  --sidebar: #1B212B;
+  --sidebar-foreground: #E8E6E1;
+  --sidebar-primary: #F2A93B;
+  --sidebar-primary-foreground: #12161C;
+  --sidebar-accent: #2A313D;
+  --sidebar-accent-foreground: #E8E6E1;
+  --sidebar-border: #2A313D;
+  --sidebar-ring: #F2A93B;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background-color: #12161C;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "tnum" 1, "ss01" 1;
+  }
+  /* Tabular figures for all mono numbers */
+  .font-mono, [class*="font-mono"] {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ===== Split-flap ticker animations ===== */
+@keyframes splitflap {
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.splitflap-cell {
+  display: inline-block;
+  transform-style: preserve-3d;
+  perspective: 300px;
+}
+
+.splitflap-flip {
+  animation: splitflap 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .splitflap-flip {
+    animation: none;
+  }
+  .ticker-scroll {
+    animation: none !important;
+  }
+}
+
+/* ===== Ticker marquee ===== */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-scroll {
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* ===== Custom scrollbars ===== */
+.scroll-dark::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-dark::-webkit-scrollbar-track { background: #12161C; }
+.scroll-dark::-webkit-scrollbar-thumb { background: #2A313D; border-radius: 4px; }
+.scroll-dark::-webkit-scrollbar-thumb:hover { background: #3A414D; }
+
+/* ===== Heatmap cell hover ===== */
+.heatmap-cell {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.heatmap-cell:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 0 0 1px #F2A93B, 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* Pulse dot for "LIVE" indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
+}
+.pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
