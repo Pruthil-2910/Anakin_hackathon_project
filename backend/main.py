@@ -23,6 +23,21 @@ async def lifespan(app: FastAPI):
     try:
         from database import Base, engine
         import models  # registers models with Base
+        import os
+        
+        # Auto-create db folder if local SQLite is used
+        if settings.database_url.startswith("sqlite:///."):
+            db_path_part = settings.database_url.replace("sqlite:///.", "./")
+            db_dir = os.path.dirname(db_path_part)
+            if db_dir and not os.path.exists(db_dir):
+                os.makedirs(db_dir, exist_ok=True)
+                
+        # Auto-create vector db folder if local SQLite path is used
+        if settings.vector_db_path.startswith("./"):
+            vec_dir = os.path.dirname(settings.vector_db_path)
+            if vec_dir and not os.path.exists(vec_dir):
+                os.makedirs(vec_dir, exist_ok=True)
+
         Base.metadata.create_all(bind=engine)
         print("✅ Database tables verified/created")
     except Exception as e:

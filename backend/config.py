@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 
 
+import os
+
 class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite:///./db/custom.db"
@@ -38,3 +40,11 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Vercel serverless environment overrides
+if os.getenv("VERCEL"):
+    print("Running in Vercel serverless environment. Redirecting database file paths to /tmp...")
+    if settings.database_url.startswith("sqlite:///./db/"):
+        settings.database_url = "sqlite:////tmp/custom.db"
+    if settings.vector_db_path.startswith("./db/"):
+        settings.vector_db_path = "/tmp/vectors.db"

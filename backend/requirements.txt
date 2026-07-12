@@ -18,6 +18,10 @@ passlib[bcrypt]==1.7.4
 requests==2.32.3
 httpx==0.28.1
 
+# Embeddings + vectors
+sqlite-vec==0.1.1
+numpy==2.2.1
+
 # Utilities
 python-dotenv==1.0.1
 email-validator==2.2.0
