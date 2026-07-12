@@ -15,6 +15,29 @@ from routers import (
 )
 
 
+def run_bg_ingestion():
+    import asyncio
+    from ingestion import run_ingestion
+    # Create a new event loop for the background thread
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        print("🌱 Background seeding of SQLite database started...")
+        loop.run_until_complete(
+            run_ingestion(
+                categories=None,
+                max_pages_per_category=1,
+                include_adzuna=False,
+                skip_embeddings=False
+            )
+        )
+        print("🌱 Background seeding complete!")
+    except Exception as e:
+        print(f"⚠️ Background seeding failed: {e}")
+    finally:
+        loop.close()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup + shutdown events."""
@@ -40,6 +63,20 @@ async def lifespan(app: FastAPI):
 
         Base.metadata.create_all(bind=engine)
         print("✅ Database tables verified/created")
+
+        # Auto-seed database in background if empty (both local and Vercel SQLite environments)
+        from database import SessionLocal
+        from models import Posting
+        db = SessionLocal()
+        try:
+            count = db.query(Posting).count()
+            if count == 0:
+                import threading
+                threading.Thread(target=run_bg_ingestion, daemon=True).start()
+        except Exception as se:
+            print(f"⚠️ Check for empty db failed: {se}")
+        finally:
+            db.close()
     except Exception as e:
         print(f"⚠️  Database table creation failed: {e}")
 
