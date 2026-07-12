@@ -1,6 +1,4 @@
-"""
-Requirements for the FastAPI backend.
-"""
+# Requirements for the FastAPI backend.
 
 # Web framework
 fastapi==0.115.6
